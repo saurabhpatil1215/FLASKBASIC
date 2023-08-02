@@ -1,19 +1,38 @@
-from flask import Flask
-from flask import request
+from flask import Flask, request, render_template, jsonify
 
-app = Flask(_name_)
+app = Flask(__name__)
+
+@app.route("/",methods=['GET','POST'])
+def home_page():
+    return render_template('index.html')
+
+@app.route("/math", methods=['POST'])
+def calculate():
+    print(str(request.form))
+    operation= request.form['operation']
+    num1=int(request.form['num1'])
+    num2=int(request.form['num2'])
+   
+    if operation=='add':
+        result=num1+num2
+        addResult=f'sum of {num1}+{num2}is {result}'
+    elif operation=='subtract':
+        result=num1-num2
+        addResult=f'subtraction of {num1}-{num2}is {result}'
+    elif operation=='multiply':
+        result=num1*num2
+        addResult=f'multiplytion of {num1}*{num2}is {result}'
+    elif operation=='divide':
+        result=num1/num2
+        addResult=f'division of {num1}/{num2}is {result}'
+    else:
+        addResult=f'{operation}is either not arithmatic or its not supported.'
+
+    return render_template('results.html',result=addResult)
 
 @app.route("/")
 def hello_world():
-    return"<h1>Hello, Swanand, Its Your first Web!</h1>"
-
-@app.route("/login")
-def hello_loging():
-    return"<h1>I am loging in</h1>"
-
-@app.route("/About")
-def About():
-    return"<h1>Hello, About myself!</h1>"
+    return"<h1>Hello, Saurabh, Its Your first Web!</h1>"
 
 
 @app.route("/test")
@@ -23,5 +42,5 @@ def test():
 
 
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(host="0.0.0.0")
